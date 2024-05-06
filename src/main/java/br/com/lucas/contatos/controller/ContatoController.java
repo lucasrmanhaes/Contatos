@@ -1,19 +1,61 @@
 package br.com.lucas.contatos.controller;
 
 import br.com.lucas.contatos.model.Contato;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import br.com.lucas.contatos.service.ContatoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
-    @RestController
-    @RequestMapping("/contatos")
-    public class ContatoController {
+@RestController
+@RequestMapping("/api")
+public class ContatoController {
 
-        @PostMapping("/")
-        public Contato create(@RequestBody Contato contato){
-            return contato;
-        }
+    @Autowired
+    private ContatoService contatoService;
 
+    @PostMapping("/contatos")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Contato gravar(@RequestBody Contato contato){
+        return contatoService.gravar(contato);
     }
+
+    @GetMapping("/contatos/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<Contato> buscarPorId(@PathVariable("id") Long id){
+        return contatoService.buscarPorId(id);
+    }
+
+    @GetMapping("/contatos/listar")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Contato> buscarTodos(){
+        return contatoService.buscarTodos();
+    }
+
+    @PutMapping("/contatos")
+    @ResponseStatus(HttpStatus.OK)
+    public Contato atualizar(@RequestBody Contato contato){
+        return contatoService.atualizar(contato);
+    }
+
+    @DeleteMapping("/contatos/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable("id") Long id){
+        contatoService.remover(id);
+    }
+
+    @GetMapping("/contatos/{nome}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Contato> buscarPeloNome(@PathVariable("nome") String nome){
+        return contatoService.buscarPorNome(nome);
+    }
+
+    @GetMapping("/contatos/{startDate}/{endDate}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Contato> buscarPeloData(@PathVariable("startDate") LocalDate dataInicial,@PathVariable("endDate") LocalDate dataFinal){
+        return contatoService.buscarAniversariantes(dataInicial, dataFinal);
+    }
+}
 

@@ -54,7 +54,7 @@ public class ContatoController {
 
     @GetMapping("/contatos/{startDate}/{endDate}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Contato> buscarPeloData(@PathVariable("startDate") LocalDate dataInicial,@PathVariable("endDate") LocalDate dataFinal){
+    public List<Contato> buscarPelaData(@PathVariable("startDate") LocalDate dataInicial,@PathVariable("endDate") LocalDate dataFinal){
         return contatoService.buscarAniversariantes(dataInicial, dataFinal);
     }
 }

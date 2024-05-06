@@ -5,13 +5,13 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Entity(name = "TB_CONTATO")
+@Entity(name = "TB_CONTATOS")
 @Data
 public class Contato {
 
     @Id
     @GeneratedValue(generator = "SQ_CONTATOS", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "SQ_CONTATOS", sequenceName = "SQ_CONTATOS", allocationSize = 50)
+    @SequenceGenerator(name = "SQ_CONTATOS", sequenceName = "SQ_CONTATOS", allocationSize = 1)
     private Long id;
     private String nome;
     private String telefone;

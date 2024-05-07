@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -24,7 +25,7 @@ public class ContatoController {
 
     @GetMapping("/contatos/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Contato> buscarPorId(@PathVariable("id") Long id){
+    public Optional<Contato> buscarPorId(@PathVariable("id") UUID id){
         return contatoService.buscarPorId(id);
     }
 
@@ -42,14 +43,8 @@ public class ContatoController {
 
     @DeleteMapping("/contatos/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable("id") Long id){
+    public void remover(@PathVariable("id") UUID id){
         contatoService.remover(id);
-    }
-
-    @GetMapping("/contatos/{nome}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Contato> buscarPeloNome(@PathVariable("nome") String nome){
-        return contatoService.buscarPorNome(nome);
     }
 
     @GetMapping("/contatos/{startDate}/{endDate}")

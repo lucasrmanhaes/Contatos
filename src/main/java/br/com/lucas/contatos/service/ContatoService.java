@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ContatoService{
@@ -18,14 +19,8 @@ public class ContatoService{
         return contatoRepository.save(contato);
     }
 
-    public Optional<Contato> buscarPorId(Long id){
-        Optional<Contato> contatoOptional = contatoRepository.findById(id);
-        if(contatoOptional.isPresent()){
-            return contatoOptional;
-        }
-        else{
-            throw new RuntimeException("Contato não encontrado");
-        }
+    public Optional<Contato> buscarPorId(UUID id){
+        return contatoRepository.findById(id);
     }
 
     public List<Contato> buscarTodos(){
@@ -42,7 +37,7 @@ public class ContatoService{
         }
     }
 
-    public void remover(Long id){
+    public void remover(UUID id){
         Optional<Contato> contatoOptional = contatoRepository.findById(id);
         if(contatoOptional.isPresent()){
             contatoRepository.deleteById(id);
@@ -50,10 +45,6 @@ public class ContatoService{
         else{
             throw new RuntimeException("Contato não encontrado");
         }
-    }
-
-    public List<Contato> buscarPorNome(String nome){
-        return contatoRepository.findByNomeContaining(nome);
     }
 
     public List<Contato> buscarAniversariantes(LocalDate dataInicial, LocalDate dataFinal){

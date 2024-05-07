@@ -1,10 +1,12 @@
 package br.com.lucas.contatos.service;
 
+import br.com.lucas.contatos.dto.ContatoExibicaoDto;
 import br.com.lucas.contatos.model.Contato;
 import br.com.lucas.contatos.repository.ContatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,22 +17,35 @@ public class ContatoService{
     @Autowired
     private ContatoRepository contatoRepository;
 
-    public Contato gravar(Contato contato){
-        return contatoRepository.save(contato);
+    public ContatoExibicaoDto gravar(Contato contato){
+        Contato contatoComSenha = contatoRepository.save(contato);
+        return new ContatoExibicaoDto(contatoComSenha);
     }
 
-    public Optional<Contato> buscarPorId(UUID id){
-        return contatoRepository.findById(id);
+    public ContatoExibicaoDto buscarPeloId(UUID id){
+        Optional<Contato> contato = contatoRepository.findById(id);
+        if(contato.isPresent()){
+            return new ContatoExibicaoDto(contato.get());
+        }
+        else{
+            throw new RuntimeException("O contato não existe");
+        }
     }
 
-    public List<Contato> buscarTodos(){
-        return contatoRepository.findAll();
+    public List<ContatoExibicaoDto> buscarTodos(){
+        List<Contato> contatos = contatoRepository.findAll();
+        List<ContatoExibicaoDto> contatoExibicaoDtos = new ArrayList<>();
+        for(Contato contato : contatos){
+            contatoExibicaoDtos.add(new ContatoExibicaoDto(contato));
+        }
+        return contatoExibicaoDtos;
     }
 
-    public Contato atualizar(Contato contato){
+    public ContatoExibicaoDto atualizar(Contato contato){
         Optional<Contato> contatoOptional = contatoRepository.findById(contato.getId());
         if(contatoOptional.isPresent()){
-            return contatoRepository.save(contato);
+            var novoVontato = contatoRepository.save(contato);
+            return new ContatoExibicaoDto(novoVontato);
         }
         else{
             throw new RuntimeException("Contato não encontrado");
@@ -47,8 +62,13 @@ public class ContatoService{
         }
     }
 
-    public List<Contato> buscarAniversariantes(LocalDate dataInicial, LocalDate dataFinal){
-        return contatoRepository.findByDataNascimentoBetween(dataInicial, dataFinal);
+    public List<ContatoExibicaoDto> buscarAniversariantes(LocalDate dataInicial, LocalDate dataFinal){
+        List<Contato> listaContato = contatoRepository.findByDataNascimentoBetween(dataInicial, dataFinal);
+        List<ContatoExibicaoDto> contatoExibicaoDtos = new ArrayList<>();
+        for(Contato contato : listaContato){
+            contatoExibicaoDtos.add(new ContatoExibicaoDto(contato));
+        }
+        return contatoExibicaoDtos;
     }
 
 }

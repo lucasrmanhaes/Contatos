@@ -1,8 +1,10 @@
 package br.com.lucas.contatos.service;
 
+import br.com.lucas.contatos.dto.ContatoCadastroDto;
 import br.com.lucas.contatos.dto.ContatoExibicaoDto;
 import br.com.lucas.contatos.model.Contato;
 import br.com.lucas.contatos.repository.ContatoRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -17,9 +19,11 @@ public class ContatoService{
     @Autowired
     private ContatoRepository contatoRepository;
 
-    public ContatoExibicaoDto gravar(Contato contato){
-        Contato contatoComSenha = contatoRepository.save(contato);
-        return new ContatoExibicaoDto(contatoComSenha);
+    public ContatoExibicaoDto gravar(ContatoCadastroDto contatoCadastroDto){
+        Contato contato = new Contato();
+        //Copiando os atributos de uma classe para outra
+        BeanUtils.copyProperties(contatoCadastroDto, contato);
+        return new ContatoExibicaoDto(contatoRepository.save(contato));
     }
 
     public ContatoExibicaoDto buscarPeloId(UUID id){

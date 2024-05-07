@@ -1,8 +1,10 @@
 package br.com.lucas.contatos.controller;
 
+import br.com.lucas.contatos.dto.ContatoCadastroDto;
 import br.com.lucas.contatos.dto.ContatoExibicaoDto;
 import br.com.lucas.contatos.model.Contato;
 import br.com.lucas.contatos.service.ContatoService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,8 @@ public class ContatoController {
 
     @PostMapping("/contatos")
     @ResponseStatus(HttpStatus.CREATED)
-    public ContatoExibicaoDto gravar(@RequestBody Contato contato){
-        return service.gravar(contato);
+    public ContatoExibicaoDto gravar(@RequestBody ContatoCadastroDto contatoCadastroDto){
+        return service.gravar(contatoCadastroDto);
     }
 
     @GetMapping("/contatos/{id}")

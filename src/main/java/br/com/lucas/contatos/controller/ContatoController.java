@@ -4,6 +4,7 @@ import br.com.lucas.contatos.dto.ContatoCadastroDto;
 import br.com.lucas.contatos.dto.ContatoExibicaoDto;
 import br.com.lucas.contatos.model.Contato;
 import br.com.lucas.contatos.service.ContatoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ContatoController {
 
     @PostMapping("/contatos")
     @ResponseStatus(HttpStatus.CREATED)
-    public ContatoExibicaoDto gravar(@RequestBody ContatoCadastroDto contatoCadastroDto){
+    public ContatoExibicaoDto gravar(@RequestBody @Valid ContatoCadastroDto contatoCadastroDto){
         return service.gravar(contatoCadastroDto);
     }
 

@@ -2,6 +2,7 @@ package br.com.lucas.contatos.service;
 
 import br.com.lucas.contatos.dto.ContatoCadastroDto;
 import br.com.lucas.contatos.dto.ContatoExibicaoDto;
+import br.com.lucas.contatos.exception.ContatoNaoEncontradoException;
 import br.com.lucas.contatos.model.Contato;
 import br.com.lucas.contatos.repository.ContatoRepository;
 import org.springframework.beans.BeanUtils;
@@ -32,7 +33,7 @@ public class ContatoService{
             return new ContatoExibicaoDto(contato.get());
         }
         else{
-            throw new RuntimeException("O contato não existe");
+            throw new ContatoNaoEncontradoException("O Contato não existe");
         }
     }
 
@@ -74,6 +75,4 @@ public class ContatoService{
         }
         return contatoExibicaoDtos;
     }
-
 }
-

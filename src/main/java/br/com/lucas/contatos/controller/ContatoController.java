@@ -5,7 +5,6 @@ import br.com.lucas.contatos.dto.ContatoExibicaoDto;
 import br.com.lucas.contatos.model.Contato;
 import br.com.lucas.contatos.service.ContatoService;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +31,27 @@ public class ContatoController {
         return service.buscarPeloId(id);
     }
 
+    @GetMapping("/contatos/nome/{nome}")
+    @ResponseStatus(HttpStatus.OK)
+    public ContatoExibicaoDto buscarPorNomePath(@PathVariable("nome") String nome){
+        return service.buscarPorNome(nome);
+    }
+
+    @GetMapping(value = "/contatos", params = "nome")
+    public ContatoExibicaoDto buscarPorNomeParametro(@RequestParam("nome") String nome){
+        return service.buscarPorNome(nome);
+    }
+
     @GetMapping("/contatos/listar")
     @ResponseStatus(HttpStatus.OK)
     public List<ContatoExibicaoDto> buscarTodos(){
         return service.buscarTodos();
+    }
+
+    @GetMapping("/contatos/{startDate}/{endDate}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ContatoExibicaoDto> buscarPelaData(@PathVariable("startDate") LocalDate dataInicial,@PathVariable("endDate") LocalDate dataFinal){
+        return service.buscarAniversariantes(dataInicial, dataFinal);
     }
 
     @PutMapping("/contatos")
@@ -50,10 +66,5 @@ public class ContatoController {
         service.remover(id);
     }
 
-    @GetMapping("/contatos/{startDate}/{endDate}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ContatoExibicaoDto> buscarPelaData(@PathVariable("startDate") LocalDate dataInicial,@PathVariable("endDate") LocalDate dataFinal){
-        return service.buscarAniversariantes(dataInicial, dataFinal);
-    }
 }
 

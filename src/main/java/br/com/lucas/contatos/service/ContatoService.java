@@ -67,6 +67,16 @@ public class ContatoService{
         }
     }
 
+    public ContatoExibicaoDto buscarPorNome(String nome){
+        Optional<Contato> contatoOptional = contatoRepository.buscarContatoPorNome(nome);
+        if(contatoOptional.isPresent()){
+            return new ContatoExibicaoDto(contatoOptional.get());
+        }
+        else{
+            throw new ContatoNaoEncontradoException("Contato não encontrado");
+        }
+    }
+
     public List<ContatoExibicaoDto> buscarAniversariantes(LocalDate dataInicial, LocalDate dataFinal){
         List<Contato> listaContato = contatoRepository.findByDataNascimentoBetween(dataInicial, dataFinal);
         List<ContatoExibicaoDto> contatoExibicaoDtos = new ArrayList<>();

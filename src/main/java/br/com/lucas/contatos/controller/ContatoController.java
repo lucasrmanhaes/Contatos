@@ -6,6 +6,8 @@ import br.com.lucas.contatos.model.Contato;
 import br.com.lucas.contatos.service.ContatoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
@@ -44,13 +46,13 @@ public class ContatoController {
 
     @GetMapping("/contatos/listar")
     @ResponseStatus(HttpStatus.OK)
-    public List<ContatoExibicaoDto> buscarTodos(){
-        return service.buscarTodos();
+    public Page<ContatoExibicaoDto> buscarTodos(Pageable paginacao){
+        return service.buscarTodos(paginacao);
     }
 
-    @GetMapping("/contatos/{startDate}/{endDate}")
+    @GetMapping(value = "/contatos", params = {"dataInicio", "dataFinal"})
     @ResponseStatus(HttpStatus.OK)
-    public List<ContatoExibicaoDto> buscarPelaData(@PathVariable("startDate") LocalDate dataInicial,@PathVariable("endDate") LocalDate dataFinal){
+    public List<ContatoExibicaoDto> buscarPelaData(@RequestParam("dataInicio") LocalDate dataInicial,@RequestParam("dataFinal") LocalDate dataFinal){
         return service.buscarAniversariantes(dataInicial, dataFinal);
     }
 

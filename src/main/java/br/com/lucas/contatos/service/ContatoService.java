@@ -7,6 +7,9 @@ import br.com.lucas.contatos.model.Contato;
 import br.com.lucas.contatos.repository.ContatoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,13 +40,8 @@ public class ContatoService{
         }
     }
 
-    public List<ContatoExibicaoDto> buscarTodos(){
-        List<Contato> contatos = contatoRepository.findAll();
-        List<ContatoExibicaoDto> contatoExibicaoDtos = new ArrayList<>();
-        for(Contato contato : contatos){
-            contatoExibicaoDtos.add(new ContatoExibicaoDto(contato));
-        }
-        return contatoExibicaoDtos;
+    public Page<ContatoExibicaoDto> buscarTodos(Pageable paginacao){
+       return contatoRepository.findAll(paginacao).map(ContatoExibicaoDto::new);
     }
 
     public ContatoExibicaoDto atualizar(Contato contato){
@@ -68,7 +66,7 @@ public class ContatoService{
     }
 
     public ContatoExibicaoDto buscarPorNome(String nome){
-        Optional<Contato> contatoOptional = contatoRepository.buscarContatoPorNome(nome);
+        Optional<Contato> contatoOptional = contatoRepository.findByNome(nome);
         if(contatoOptional.isPresent()){
             return new ContatoExibicaoDto(contatoOptional.get());
         }
@@ -77,12 +75,20 @@ public class ContatoService{
         }
     }
 
+//    public List<ContatoExibicaoDto> buscarAniversariantes(LocalDate dataInicial, LocalDate dataFinal){
+//        List<Contato> listaContato = contatoRepository.findByDataNascimentoBetween(dataInicial, dataFinal);
+//        List<ContatoExibicaoDto> contatoExibicaoDtos = new ArrayList<>();
+//        for(Contato contato : listaContato){
+//            contatoExibicaoDtos.add(new ContatoExibicaoDto(contato));
+//        }
+//        return contatoExibicaoDtos;
+//    }
+
     public List<ContatoExibicaoDto> buscarAniversariantes(LocalDate dataInicial, LocalDate dataFinal){
-        List<Contato> listaContato = contatoRepository.findByDataNascimentoBetween(dataInicial, dataFinal);
-        List<ContatoExibicaoDto> contatoExibicaoDtos = new ArrayList<>();
-        for(Contato contato : listaContato){
-            contatoExibicaoDtos.add(new ContatoExibicaoDto(contato));
-        }
-        return contatoExibicaoDtos;
+        return contatoRepository.findByDataNascimentoBetween(dataInicial, dataFinal)
+        .stream()
+        .map(ContatoExibicaoDto::new)
+        .toList();
     }
+
 }

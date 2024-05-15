@@ -1,14 +1,21 @@
 package br.com.lucas.contatos.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity
-@Table(name = "TB_CONTATOS")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@Entity()
+@Table(name = "TB_CONTATOS")
 public class Contato {
 
     @Id
@@ -20,13 +27,5 @@ public class Contato {
     private String email;
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Contato contato = (Contato) o;
-        return Objects.equals(id, contato.id) && Objects.equals(nome, contato.nome) && Objects.equals(telefone, contato.telefone) && Objects.equals(email, contato.email) && Objects.equals(dataNascimento, contato.dataNascimento);
-    }
 
 }

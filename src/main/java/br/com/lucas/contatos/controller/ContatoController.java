@@ -44,7 +44,7 @@ public class ContatoController {
         return service.buscarPorNome(nome);
     }
 
-    @GetMapping("/contatos/listar")
+    @GetMapping("/contatos")
     @ResponseStatus(HttpStatus.OK)
     public Page<ContatoExibicaoDto> buscarTodos(Pageable paginacao){
         return service.buscarTodos(paginacao);

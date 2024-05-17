@@ -22,6 +22,7 @@ public class Usuario implements UserDetails {
     @Id @GeneratedValue(generator = "UUID") @Column(name = "id_usuario")
     private UUID idUsuario;
     private String nome;
+    @Column(unique = true)
     private String email;
     private String senha;
     @Enumerated(EnumType.STRING)

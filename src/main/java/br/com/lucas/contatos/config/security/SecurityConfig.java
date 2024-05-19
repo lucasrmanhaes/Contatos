@@ -18,17 +18,16 @@ public class SecurityConfig {
 
     @Bean //Objeto gerenciado pelo Spring
     public SecurityFilterChain filtrarCadeiaDeSeguranca(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/contatos").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/contatos")
-                        .hasRole("ADMIN")
-                        .anyRequest()
-                        .authenticated()
-                ).build();
+        return httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/contatos").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/contatos")
+                    .hasRole("ADMIN")
+                    .anyRequest()
+                    .authenticated()
+            ).build();
     }
 
     @Bean

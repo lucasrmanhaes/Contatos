@@ -22,7 +22,6 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public UsuarioExibicaoDto gravar(UsuarioCadastroDto usuarioCadastroDto){
-
         //Criptografando a senha
         String senhaCriptografada = new BCryptPasswordEncoder().encode(usuarioCadastroDto.senha());
         Usuario usuario = new Usuario();

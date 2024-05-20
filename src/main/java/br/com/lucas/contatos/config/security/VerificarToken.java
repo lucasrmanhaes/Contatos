@@ -35,7 +35,7 @@ public class VerificarToken extends OncePerRequestFilter {
         }
         //Senão iremos atribuir o valor do header na String token e extrair o token sem a palavra Bearer
         else{
-            token = authorizationHeader.replace("Bearer", ""); //Replace(Fazer a troca da palavra Bearer por nada) //trim(Trocar os espaçõs vazios no começo e no fim)
+            token = authorizationHeader.replace("Bearer", "").trim(); //Replace(Fazer a troca da palavra Bearer por nada) //trim(Trocar os espaçõs vazios no começo e no fim)
             //Validando o token que será enviado na requisição e caso seja validado conterá o subject que será o email do usuario
             String login = tokenService.validarToken(token);
             //Usando as autorizações do usuário(email) para validar o token

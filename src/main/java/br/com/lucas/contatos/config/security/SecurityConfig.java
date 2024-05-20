@@ -27,11 +27,16 @@ public class SecurityConfig {
         return httpSecurity.csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        //Cadastrar usuário -> permitido para todos
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/contatos").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/contatos")
-                        .hasRole("ADMIN")
+                        //Logar usuário -> permitido para todos
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        //Listar contatos -> apenas ADMIN e USER
+                        .requestMatchers(HttpMethod.GET, "/api/contatos").hasAnyRole("ADMIN", "USER")
+                        //Criar, atualizar e deletar -> apenas ADMIN
+                        .requestMatchers(HttpMethod.POST, "/api/contatos").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/contatos").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/contatos").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated()
                 )

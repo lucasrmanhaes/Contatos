@@ -1,5 +1,6 @@
 package br.com.lucas.contatos.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,10 +12,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration //Classe de configuração de segurança
 @EnableWebSecurity //Todas as requisições irão passar por essa classe
 public class SecurityConfig {
+
+    //Injetando dependencia de verificar token
+    @Autowired
+    VerificarToken verificarToken;
 
     @Bean //Objeto gerenciado pelo Spring
     public SecurityFilterChain filtrarCadeiaDeSeguranca(HttpSecurity httpSecurity) throws Exception {
@@ -28,7 +34,10 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
                         .anyRequest()
                         .authenticated()
-                ).build();
+                )
+                //VERIFICANDO TOKEN - Verificar token antes do UsernamePasswordAuthenticationFilter
+                .addFilterBefore(verificarToken, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean

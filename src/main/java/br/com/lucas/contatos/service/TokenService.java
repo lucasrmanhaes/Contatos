@@ -1,4 +1,4 @@
-package br.com.lucas.contatos.config.security;
+package br.com.lucas.contatos.service;
 
 import br.com.lucas.contatos.model.Usuario;
 import com.auth0.jwt.JWT;

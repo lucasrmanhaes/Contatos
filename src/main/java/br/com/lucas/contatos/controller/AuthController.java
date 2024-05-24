@@ -1,6 +1,6 @@
 package br.com.lucas.contatos.controller;
 
-import br.com.lucas.contatos.config.security.TokenService;
+import br.com.lucas.contatos.service.TokenService;
 import br.com.lucas.contatos.dto.TokenDto;
 import br.com.lucas.contatos.dto.UsuarioLoginDto;
 import br.com.lucas.contatos.dto.UsuarioCadastroDto;

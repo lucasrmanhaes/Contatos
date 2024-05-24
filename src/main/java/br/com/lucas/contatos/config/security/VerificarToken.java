@@ -1,6 +1,7 @@
 package br.com.lucas.contatos.config.security;
 
 import br.com.lucas.contatos.repository.UsuarioRepository;
+import br.com.lucas.contatos.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,8 +1,11 @@
 package br.com.lucas.contatos.controller;
 
+import br.com.lucas.contatos.service.TokenService;
+import br.com.lucas.contatos.dto.TokenDto;
 import br.com.lucas.contatos.dto.UsuarioLoginDto;
 import br.com.lucas.contatos.dto.UsuarioCadastroDto;
 import br.com.lucas.contatos.dto.UsuarioExibicaoDto;
+import br.com.lucas.contatos.model.Usuario;
 import br.com.lucas.contatos.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +23,13 @@ public class AuthController {
     //Injeção de dependencia do gerenciador de autenticação
     @Autowired
     private AuthenticationManager authenticationManager;
+    //Injeção de dependencia do UsuarioService
     @Autowired
     private UsuarioService usuarioService;
+    //Injeção de dependencia do TokenService
+    @Autowired
+    private TokenService tokenService;
+
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid UsuarioLoginDto usuarioLoginDto){
@@ -35,8 +43,12 @@ public class AuthController {
         //Classe que representa a autenticação que necessita de um gerenciador de autenticação
         Authentication auth = authenticationManager.authenticate(usernamePassword);
 
-        //Se a autenticação ocorrer será retornado um ok
-        return ResponseEntity.ok().body(auth);
+        //Para gerar um token iremos usar o auth que com o metodo getPrincipal() retorna um object então iremos
+        //fazer um casting para transformar esse objeto generico em um objeto especifico do tipo Usuario
+        String token = tokenService.gerarToken((Usuario) auth.getPrincipal());
+
+        //Se a autenticação ocorrer será retornado o token para o usuario
+        return ResponseEntity.ok(new TokenDto(token));
     }
 
     @PostMapping("/register")
